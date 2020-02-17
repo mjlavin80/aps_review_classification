@@ -1,0 +1,36 @@
+id,status,record_id,source_type,source_gender,source_title,source_date,source_publisher,source_pub_viaf,source_genre,source_price,source_author_viaf,source_author_name,target_type,target_gender,target_title,target_date,target_publisher,target_pub_viaf,target_genre,target_price,target_author_viaf,target_author_name
+152,done,136129795,single_focus,m,"Times Before the Reformation",1880,"Robert Carter & Brothers",NULL,"historical nonfiction",,,"William Didwiddie",single_focus,m,"Times before the Reformation, with an account of fra Girolamo Savonarolam the Friar of Florence",1880,"New York: Robert Carter & Brothers ",NULL,Nonfiction,,http://viaf.org/viaf/93207229,"William Dinwiddie"
+662,done,124766315,single_focus,f,"One Man Who Was Content",1897,"The Century Company",NULL,fiction,$1.00,http://viaf.org/viaf/44455381,"Schuyler Van Rensselaer",single_focus,f,"One Man Who Was Content ",1897,"New York: The Century Company",NULL,Fiction,$1.00,http://viaf.org/viaf/44455381,"Schuyler Van Rensselaer"
+236,done,124905465,multi,NULL,,,,NULL,,,,,multi,NULL,,,,NULL,,,,
+660,done,136243777,multi,multi,,,,NULL,,,,,cluster,NULL,,,,NULL,,,,
+250,done,136680305,not_review,NULL,,,,NULL,,,,,not_review,NULL,,,,NULL,,,,
+402,done,136143241,multi,NULL,,,,NULL,,,,,cluster,NULL,,,,NULL,,,,
+600,done,90622858,single_focus,multi,"The Editor And His People",1924,"The Macmillan Company",NULL,Nonfiction,$2.50,"http://viaf.org/viaf/22217519; http://viaf.org/viaf/39014803","William Allen White; Helen Ogden Mahin",single_focus,m,"The Editor and His People",1924,"The Macmillan Company",NULL,nonfiction,$2.50,http://viaf.org/viaf/22217519,"William Allen White"
+77,done,89635917,multi,NULL,,,,NULL,,,,,single_focus,m,"The English Poets",1880,"Macmillan & Company",NULL,poetry,,http://viaf.org/viaf/73868557,"Matthew Arnold"
+700,done,90225603,multi,NULL,,,,NULL,,,,,multi,NULL,,,,NULL,,,,
+734,done,89671396,single_focus,f,"William Newton Clarke",1916,Scribner,NULL,Nonfiction(Biography),$2,,"Mrs. Clarke",not_review,NULL,,,,NULL,,,,
+536,done,90135638,single_focus,m,"Nature and Man",1889,"D. Appleton & Co. ",NULL,Nonfiction,$2.00,http://viaf.org/viaf/27854648,"J. Estlin Carpenter",single_focus,m,"Nature and Man",1889,"D. Appleton and Company",NULL,nonfiction,$2.00,http://viaf.org/viaf/5017040,"William B Carpenter"
+142,done,90287585,single_focus,m,"Légendes Prophéties et Superstitions de la Guerre",1919,"La Renaissance du livre",NULL,Nonfiction,,http://viaf.org/viaf/9845234,"Albert Dauzat",single_focus,m,"Legendes, Propheties, et Superstitions de la Guerre",1919,"La Renaissance du Livre",NULL,nonfiction,"5 francs",http://viaf.org/viaf/9845234,"Albert Dauzat"
+535,done,89679830,multi,NULL,,,,NULL,,,,,multi,NULL,,,,NULL,,,,
+677,done,125562679,multi,NULL,,,,NULL,,,,,cluster,NULL,,,,NULL,,,,
+194,done,136144380,single_focus,m,"The Ragged-Trousered Philanthropists",1916,"Frederick A. Stokes Company",NULL,Fiction,$1.25,http://viaf.org/viaf/51943759,"Robert Tressall",single_focus,m,"The Ragged-Trousered Philanthropists",1916,"Frederick A. Stokes Company",NULL,fiction,$1.25,http://viaf.org/viaf/51943759,"Robert Tressall"
+531,done,124909790,single_focus,m,"Representative Etchings by Artists of To-day in America",1887,"Frederick A. Stokes & Bro",NULL,Nonfiction,,"http://viaf.org/viaf/18595062; http://viaf.org/viaf/283347; http://viaf.org/viaf/40868358; Not available; http://viaf.org/viaf/228390011; http://viaf.org/viaf/34346025; http://viaf.org/viaf/93986255; Not Available; Not Available; http://viaf.org/viaf/96572","Frederick S. Church; Robert F. Blum; James S. King; Stephen J. Parrish; Herman N. Hyneman; Frederic",single_focus,m,"Representative Etchings by Artists of To-day in America",1887,"Frederick A. Stokes & Brother",NULL,nonfiction,,http://viaf.org/viaf/16111218,"Ripley Hitchcock"
+491,done,127446458,single_focus,m,"The Break-Up of China",1899,"Harper & Brothers: New York",NULL,Nonfiction,,http://viaf.org/viaf/15709462,"Lord Charles Beresford, M.P.",single_focus,m,"The Break-Up of China",1899,"Harper and Brothers",NULL,nonfiction,,http://viaf.org/viaf/15709462,"Lord Charles Beresford"
+711,done,90114308,multi,NULL,,,,NULL,,,,,multi,NULL,,,,NULL,,,,
+135,done,127684403,not_review,NULL,,,,NULL,,,,,not_review,NULL,,,,NULL,,,,
+722,done,136678992,multi,NULL,,,,NULL,,,,,cluster,NULL,,,,NULL,,,,
+221,done,89675866,single_focus,f,"The French Procession: A Pageant of Great Writers",1910,"Duffield & Co. ",NULL,Nonfiction,,http://viaf.org/viaf/76367889,"Madame Mary DuClaux",single_focus,f,"The French Procession : A Pageant of Great Writers",1910,"Duffield & Company",NULL,nonfiction,,http://viaf.org/viaf/76367889,"Mary DuClaux"
+136,done,136956145,brief,NULL,,,,NULL,,,,,multi,NULL,,,,NULL,,,,
+615,done,127390820,single_focus,m,"The Youth Of Frederick The Great",1893,"S.C. Griggs & Co. ",NULL,Nonfiction,$2,http://viaf.org/viaf/7392798,"Ernest Lavisse",single_focus,m,"The Youth of Frederick the Great",1893,"S.C. Griggs & Company",NULL,biography,$2,http://viaf.org/viaf/7392798,"Ernest Lavisse"
+357,done,89643011,multi,NULL,,,,NULL,,,,,multi,NULL,,,,NULL,,,,
+362,done,125284689,single_focus,f,"The Goede Vrouw of Mana-ha-ta, at Home and in Society",1899,"Charles Scribner's Sons",NULL,Nonfiction,$2,http://viaf.org/viaf/15164687,"Mrs. John King Van Rensselaer",single_focus,f,"The Goede Vrouw of Manu-ha-ta At Home and in Society",1899,"Charles Scribner's Sons",NULL,nonfiction,$2,http://viaf.org/viaf/15164687,"John King Van Rensselaer"
+565,done,124743705,multi,NULL,,,,NULL,,,,,multi,NULL,,,,NULL,,,,
+646,done,124747684,single_focus,m,"Abner Daniel",1902,"Harper and Brothers",NULL,fiction,,http://viaf.org/viaf/4090827,"Will N Harben",single_focus,m,"Abner Daniel",1902,"Harper and Brothers",NULL,Fiction,,http://viaf.org/viaf/4090827,"Will N. Harben"
+86,done,124736362,single_focus,none,Carnival,1912,"D. Appleton and Company",NULL,fiction,,http://viaf.org/viaf/7429143,"Compton Mackenzie",single_focus,m,Carnival,1912,"D. Appleton and Company",NULL,Fiction,,http://viaf.org/viaf/7429143,"Compton Mackenzie"
+12,done,124900101,single_focus,m,Missouri,1888,"Houghton, Mifflin & Company",NULL,"historical nonfiction",$1.25,http://viaf.org/viaf/71253540,"Lucien Carr",single_focus,m,"Missouri: A Bone of Contention",1888,"Houghton, Mifflin & Co. ",NULL,Nonfiction,$1.25,http://viaf.org/viaf/71253540,"Lucien Carr"
+362,done,125284689,single_focus,f,"The Goede Vrouw of Mana-ha-ta, at Home and in Society",1899,"Charles Scribner's Sons",NULL,Nonfiction,$2,http://viaf.org/viaf/15164687,"Mrs. John King Van Rensselaer",single_focus,f,"The Goede Vrouw of Manu-ha-ta At Home and in Society",1899,"Charles Scribner's Sons",NULL,nonfiction,$2,http://viaf.org/viaf/15164687,"John King Van Rensselaer"
+672,done,136964116,single_focus,m,"Standards of Public Morality",1908,"The Macmillan Company",NULL,Nonfiction,$1,http://viaf.org/viaf/27225581,"Arthur Twinning Hadley",single_focus,m,"Standards of Public Morality",1908,"The Macmillan Company",NULL,nonfiction,$1,http://viaf.org/viaf/27225581,"Arthur Twining Hadley"
+622,done,90221629,not_review,NULL,,,,NULL,,,,,multi,NULL,,,,NULL,,,,
+348,done,90161765,not_review,NULL,,,,NULL,,,,,cluster,NULL,,,,NULL,,,,
+510,done,136967124,not_review,NULL,,,,NULL,,,,,brief,NULL,,,,NULL,,,,
+685,done,124900758,multi,NULL,,,,NULL,,,,,multi,NULL,,,,NULL,,,,
