@@ -90,6 +90,9 @@ def getWordCount(txt):
     toks = fixHyphenatedWords(toks)
     return len(toks)
 
+def removeTxt(file_id):
+    return file_id[:-4]
+
 # ** replace with name of directory containing files **
 directory = "../../aps_reviews_50/aps_reviews/"
 
@@ -106,7 +109,9 @@ txt_df = pd.DataFrame()
 
 # load info into df        
 txt_df['texts'] = txts
+txt_df['cleaned_texts'] = txt_df.texts.map(cleanText).map(fixHyphenatedWords)
 txt_df['id_num'] = filenames
+txt_df['id_num'] = txt_df.id_num.map(removeTxt)
 txt_df['word_count'] = txt_df.texts.map(getWordCount)
 txt_df['percent_real_words'] = txt_df.texts.map(checkQuality)
 
