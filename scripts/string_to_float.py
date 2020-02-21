@@ -66,5 +66,6 @@ def string_to_float(text):
             return newfloat
         except:
             return None
-            
-string_to_float("s.5o")
+
+if __name__ == '__main__':      
+    string_to_float("s.5o")
