@@ -90,3 +90,6 @@ def removePeriodsNotFollowingTitleOrInitial(name):
         else:
             cleaned_name.append(part)
     return ' '.join(cleaned_name)
+
+def cleanName(name):
+    return ' '.join([word for word in name.split() if (word[0].isalpha())])
