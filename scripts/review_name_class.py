@@ -2,11 +2,9 @@
 # this file defines the ReviewName class & functions used by PublisherName & AuthName
 
 # import necessary packages
-
 import re
 
 # create list of titles
-
 titles = """Doctor,Dr,Mr,Mrs,Miss,Msgr,Monsignor,Rev,Reverend,Hon,Honorable,Honourable,Prof,Professor,Madame,Madam,Lady,Lord,Sir,Dame,Master,Mistress,Princess,Prince,Duke,Duchess,Baron,Father,Chancellor,Principal,President,Pres,Warden,Dean,Regent,Rector,Provost,Director
 """
 titles = titles.rstrip().split(',')
@@ -15,7 +13,20 @@ class ReviewNameObj(str):
     review_id = ''
     review_loc = ''
 
-# Functions used by both PublisherName & author_surname_dict
+def removePunct(word, dash = True):
+    if dash == True:
+        return ''.join([x for x in word if (x.isalnum()) or (x == '-') or (x=='–')])
+
+def fixInitials(initials):
+    i_list = initials.split()
+    i_list = [removePunct(x) for x in i_list]
+    return ';'.join(i_list)
+
+
+
+
+
+# get rid of all after this
 
 def cleanIndices(index_tuple):
     """
@@ -54,11 +65,6 @@ def cleanPubMatches(match_list):
     return cleaned_matches
 
 # Functions used by AuthName
-
-def fixInitials(initials):
-    i_list = initials.split()
-    i_list = [removePunct(x) for x in i_list]
-    return ';'.join(i_list)
 
 def cleanTextForNameSearch(txt):
     """
