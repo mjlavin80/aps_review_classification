@@ -1,9 +1,21 @@
 # eva bacas, 3.2.19
 # this file defines the ReviewName class & functions used by PublisherName & AuthName
 
+# import necessary packages
+
+import re
+
+# create list of titles
+
+titles = """Doctor,Dr,Mr,Mrs,Miss,Msgr,Monsignor,Rev,Reverend,Hon,Honorable,Honourable,Prof,Professor,Madame,Madam,Lady,Lord,Sir,Dame,Master,Mistress,Princess,Prince,Duke,Duchess,Baron,Father,Chancellor,Principal,President,Pres,Warden,Dean,Regent,Rector,Provost,Director
+"""
+titles = titles.rstrip().split(',')
+
 class ReviewNameObj(str):
     review_id = ''
     review_loc = ''
+
+# Functions used by both PublisherName & author_surname_dict
 
 def cleanIndices(index_tuple):
     """
@@ -15,6 +27,8 @@ def cleanIndices(index_tuple):
     if y[-1] in '!"#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~':
         y = y[:-1]
     return (x,y)
+
+# Functions used by PublisherName
 
 def removeDashForPub(pub_match):
     """
@@ -38,3 +52,41 @@ def cleanPubMatches(match_list):
                 index_to_start = i+1
         cleaned_matches.append(' '.join(match[1].split()[index_to_start:]))
     return cleaned_matches
+
+# Functions used by AuthName
+
+def fixInitials(initials):
+    i_list = initials.split()
+    i_list = [removePunct(x) for x in i_list]
+    return ';'.join(i_list)
+
+def cleanTextForNameSearch(txt):
+    """
+    Removes all non-newline whitespace and adds spaces around commas, semicolons, and colons.
+    """
+    #delete extra whitespace
+    txt = re.sub(' +',' ',txt)
+
+    #delete characters that should never be in this dataset (i think)
+    txt = re.sub("\\'\(\)\*/<=>@\[\]^_`\|~","",txt)
+
+    #adding space around certain punctuation
+    txt = re.sub(',',' , ',txt)
+    txt = re.sub(';',' ; ',txt)
+    txt = re.sub(':',' : ',txt)
+    txt = re.sub('"',' " ',txt)
+    txt = re.sub("'"," ' " ,txt)
+    return txt
+
+def removePeriodsNotFollowingTitleOrInitial(name):
+    """
+    Takes string, removes periods not following a title or an initial.
+    """
+    name_parts = name.split()
+    cleaned_name = []
+    for part in name_parts:
+        if (len(part)>2) and (part.endswith('.')) and (part[:-1] not in titles):
+            cleaned_name.append(part[:-1])
+        else:
+            cleaned_name.append(part)
+    return ' '.join(cleaned_name)
