@@ -36,7 +36,7 @@ def remove_punct(word, dash = True):
 
 def fix_initials(initials):
     i_list = initials.split()
-    i_list = [removePunct(x) for x in i_list]
+    i_list = [remove_punct(x) for x in i_list]
     return ';'.join(i_list)
 
 def get_fuzzy_pub_ends(pub_part):
