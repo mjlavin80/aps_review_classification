@@ -217,11 +217,11 @@ class PersonName(NameObj):
 
     def __reformat(self):
         if self.initials:
-            self.initials = fixInitials(self.initials)
+            self.initials = fix_initials(self.initials)
         if self.middle_initial:
-            self.middle_initial = fixInitials(self.middle_initial)
+            self.middle_initial = fix_initials(self.middle_initial)
         if self.first_initial:
-            self.first_initial = fixInitials(self.first_initial)
+            self.first_initial = fix_initials(self.first_initial)
 
     def __getvariants(self):
         self.first_name_variants = ['']
