@@ -1,10 +1,10 @@
-# eva bacas, 3.4.19
-# this file defines the NameObj, PubName, and PersonName classes
+# eva bacas, 3.2.19
+# this file defines the AuthName class
 
-# import necessary packages
-import re
+#import necessary packages
 import pickle
 from symspellpy.symspellpy import SymSpell, Verbosity
+from review_name_class.py import ReviewNameObj, fixInitials
 
 # create list of titles
 titles = """Doctor,Dr,Mr,Mrs,Miss,Msgr,Monsignor,Rev,Reverend,Hon,Honorable,Honourable,Prof,Professor,Madame,Madam,Lady,Lord,Sir,Dame,Master,Mistress,Princess,Prince,Duke,Duchess,Baron,Father,Chancellor,Principal,President,Pres,Warden,Dean,Regent,Rector,Provost,Director
@@ -21,98 +21,12 @@ for x in titles:
         title_gender_dict[x.lower()] = 'M'
 
 # import symspell dictionaries
-female_name_dict = pickle.load(open('../data/female_name_dict.pkl','rb'))
-male_name_dict = pickle.load(open('../data/male_name_dict.pkl','rb'))
+female_name_dict = pickle.load(open('female_name_dict.pkl','wb'))
+male_name_dict = pickle.load(open('female_name_dict.pkl','wb'))
 
-# create lists of pub_ends and pub_associates
-pub_ends = ['company','co','incorporated','inc','firm','press','group','publishers','publishing',
-                    'publications','pub','books','ltd','limited','society','house','associates']
-pub_associates = ['sons','son','brother','brothers']
-
-# define functions used by NameObj and child classes
-def remove_punct(word, dash = True):
-    if dash == True:
-        return ''.join([x for x in word if (x.isalnum()) or (x == '-') or (x=='–')])
-
-def fix_initials(initials):
-    i_list = initials.split()
-    i_list = [removePunct(x) for x in i_list]
-    return ';'.join(i_list)
-
-def get_fuzzy_pub_ends(pub_part):
+class AuthName(ReviewNameObj):
     """
-    Fuzzy matches pub ends.
-    Returns pub ends closer than 2 edits away.
-    """
-    pub_part = ''.join([x for x in list(pub_part) if x.isalpha()]).lower()
-    potential_matches = [x for x in pub_ends if (edit_distance(pub_part, x[:len(pub_part)+1]) < 2)]
-
-    return potential_matches
-
-# define NameObj
-class NameObj(str):
-    review_id = ''
-    review_loc = ''
-    all_variants = ''
-
-    def getNameVariants():
-        return all_variants
-
-# define PubName
-class PubName(NameObj):
-    """
-    Object type for publisher names. Inherits NameObj & string functions.
-
-    Parameters
-    ----------
-    self.full_name : full name passed to the original init
-    self.pub_count : number of names (inc. all full names, last names, sons, brothers)
-    self.pub_type : type of publisher if found in pub_ends
-    self.pub_names : all names (inc. all full names, last names - not including sons, brothers)
-    self.pub_associates : son(s)/brother(s)
-
-    Attributes
-    ----------
-    .getNameVariants() : returns all name variants for VIAF search
-
-    """
-    name_type = 'publisher'
-
-    def __assign(self):
-        self.name_parts = ''
-        self.pub_count = ''
-        self.pub_type = ''
-        self.pub_names = ''
-        self.pub_associates = ''
-
-        temp = re.sub(',',' , ',self.full_name)
-        if '&' in self.full_name or 'and' in self.full_name or 'And' in self.full_name:
-            self.name_parts = [x.strip().lower() for x in re.split('&|and|And|,', temp)]
-        else:
-            self.name_parts = [x.strip().lower() for x in temp.split()]
-
-        self.pub_type = self.name_parts[-1]
-        self.pub_type_variants = get_fuzzy_pub_ends(self.pub_type)
-        self.pub_count = len(self.name_parts[:-1])
-        self.pub_associates = ''.join([remove_punct(x).lower() for x in self.name_parts if x in pub_associates])
-        self.pub_names = ';'.join([word.replace("'s", "") for word in self.name_parts[:-1] if word not in pub_associates])
-
-    def __getvariants(self):
-        self.all_variants = [self.full_name]
-        # kinda stuck here
-        # will fix later
-        self.all_variants = list(set([' '.join(x.lower().split()) for x in self.all_variants]))
-
-    def __init__(self, name):
-        self.full_name = name
-        self.__assign()
-        self.__getvariants()
-
-# define AuthName
-
-class PersonName(NameObj):
-    """
-    Object type for potential author names. Inherits NameObj & string functions.
+    Object type for author names. Inherits ReviewNameObj & string functions.
 
     Parameters
     ----------
@@ -132,7 +46,7 @@ class PersonName(NameObj):
     .getNameVariants() : returns all name variants for VIAF search
 
     """
-    name_type = 'person'
+    name_type = 'author'
 
     def __assign(self):
         self.first_name = ''
@@ -217,11 +131,11 @@ class PersonName(NameObj):
 
     def __reformat(self):
         if self.initials:
-            self.initials = fix_initials(self.initials)
+            self.initials = fixInitials(self.initials)
         if self.middle_initial:
-            self.middle_initial = fix_initials(self.middle_initial)
+            self.middle_initial = fixInitials(self.middle_initial)
         if self.first_initial:
-            self.first_initial = fix_initials(self.first_initial)
+            self.first_initial = fixInitials(self.first_initial)
 
     def __getvariants(self):
         self.first_name_variants = ['']
@@ -264,7 +178,7 @@ class PersonName(NameObj):
     def __init__(self, name):
         self.full_name = name
         self.name_parts = [x.lower() for x in self.full_name.split()]
-        self.title = remove_punct(self.name_parts[0])
+        self.title = removePunct(self.name_parts[0])
         # ASSUMES ALMOST ALL NEUTRAL TITLES ARE MEN
         self.title_gender = title_gender_dict[self.title]
         # will add later
@@ -279,6 +193,9 @@ class PersonName(NameObj):
 
     #def combine(authname, authname):
         #pass
+
+    def getNameVariants(self):
+        return self.all_variants
 
     def __repr__(self):
         return self.full_name
