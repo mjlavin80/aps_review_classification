@@ -5,6 +5,7 @@
 import re
 import pickle
 from symspellpy.symspellpy import SymSpell, Verbosity
+from nltk.metrics import edit_distance
 
 # create list of titles
 titles = """Doctor,Dr,Mr,Mrs,Miss,Msgr,Monsignor,Rev,Reverend,Hon,Honorable,Honourable,Prof,Professor,Madame,Madam,Lady,Lord,Sir,Dame,Master,Mistress,Princess,Prince,Duke,Duchess,Baron,Father,Chancellor,Principal,President,Pres,Warden,Dean,Regent,Rector,Provost,Director
@@ -51,12 +52,16 @@ def get_fuzzy_pub_ends(pub_part):
 
 # define NameObj
 class NameObj(str):
-    review_id = ''
-    review_loc = ''
-    all_variants = ''
 
-    def getNameVariants():
-        return all_variants
+    def __init__(self, name):
+        self.full_name = name
+        self.review_id = ''
+        self.review_loc = ''
+        self.all_variants = ''
+
+    def getNameVariants(self):
+        return self.all_variants
+
 
 # define PubName
 class PubName(NameObj):

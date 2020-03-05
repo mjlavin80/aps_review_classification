@@ -7,6 +7,7 @@
 import os
 import re
 import pandas as pd
+import pickle
 from nltk.corpus import stopwords
 from symspellpy.symspellpy import SymSpell, Verbosity
 
@@ -21,12 +22,24 @@ term_index = 0
 count_index = 1
 sym_spell.load_dictionary(dictionary_path, term_index, count_index)
 
+author_surname_dict = pickle.load(open('../data/author_surname_dict.pkl','rb'))
+
 def is_word(word):
     """
     Returns true if word is found in sym_spell dictionary, otherwise returns false.
     """
     try:
         fake = sym_spell._words[word]
+        return True
+    except:
+        return False
+
+def is_surname(surname):
+    """
+    Returns true if name is found in sym_spell author surname dictionary, otherwise returns false.
+    """
+    try:
+        fake = author_surname_dict._words[surname.lower()]
         return True
     except:
         return False
@@ -54,12 +67,15 @@ def fix_hyphenated_words(toks):
     to_be_deleted = []
     for i in dash_indices:
         #if neither are words, e.g. pieces of names or misspellings
-        if (is_word(toks[i][:-1])==False and is_word(toks[i+1])==False):
+        if (is_word(toks[i][:-1])==False or is_word(toks[i+1])==False):
             #replace first item with combined, delete second item
             to_be_deleted.append(i+1)
             toks[i] = (toks[i][:-1] + toks[i+1])
-        #if combined is a word
+            #if combined is a word
         elif (is_word((toks[i][:-1] + toks[i+1]))):
+            to_be_deleted.append(i+1)
+            toks[i] = (toks[i][:-1] + toks[i+1])
+        elif (is_surname((toks[i][:-1] + toks[i+1]))):
             to_be_deleted.append(i+1)
             toks[i] = (toks[i][:-1] + toks[i+1])
         else:
@@ -93,9 +109,16 @@ def get_word_count(txt):
 def preprocess_text(txt):
     txt = re.sub(' +',' ',txt)
     #adding space around certain problem punctuation
-    txt = re.sub(',','@,@',txt)
-    txt = re.sub(';','@;@',txt)
-    txt = re.sub(':','@:@',txt)
-    txt = re.sub('"','@"@',txt)
-    txt = re.sub("'(?!s)","@'@" ,txt)
-    return ' '.join(fix_hyphenated_words(txt.split()))
+    txt = re.sub(',',' , ',txt)
+    txt = re.sub(';',' ; ',txt)
+    txt = re.sub(':',' : ',txt)
+    txt = re.sub('"',' " ',txt)
+    txt = re.sub("'(?!s)"," ' " ,txt)
+    txt = ' '.join(fix_hyphenated_words(txt.split()))
+    #putting space back
+    txt = re.sub(' , ',', ',txt)
+    txt = re.sub(' ; ','; ',txt)
+    txt = re.sub(' : ',': ',txt)
+    #and fixing hyphen issues
+    txt = re.sub('(?!\w)-(?!\w)','- ',txt)
+    return txt
