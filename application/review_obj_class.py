@@ -1,0 +1,162 @@
+# eva bacas, 3.5.19
+# this file defines the ReviewObj class & functions necessary to find PersonNames & PubNames in ReviewObj
+
+from application.name_obj_classes import PubName, PersonName, remove_punct
+from application.text_preprocessing import preprocess_text
+import re
+
+pub_ends = ['company','co','incorporated','inc','firm','press','group','publishers','publishing',
+                    'publications','pub','books','ltd','limited','society','house','associates']
+pub_ends_list = '|'.join([x.capitalize()+'\.?(?!\w)' for x in pub_ends])
+
+def remove_dash_for_pub(pub_match):
+    return re.sub(r'(?<!/w)-(?!/w)', '', pub_match)
+
+def clean_pub_matches(match_list):
+    cleaned_matches = []
+    for match in match_list:
+        index_to_start = 0
+        for i, x in enumerate(match[1].split()):
+            if x[0].islower() and x[0]!='&':
+                index_to_start = i+1
+        cleaned_matches.append(' '.join(match[1].split()[index_to_start:]))
+    return cleaned_matches
+
+def get_publishers(review):
+    """
+    Takes a ReviewObj.
+    Returns a list of potential publishers. Searches using pub_ends, capitalization, and associates.
+
+    For reference:
+    -------------
+    pub_ends = ['co','company','inc','incorporated','firm','press','group', 'pub','publishers','publishing',
+                    'publications','books','ltd','limited','society','house','associates']
+
+    pub_associates = ['sons','son','brother','brothers']
+
+    """
+
+    pubs = []
+    spans = []
+
+    # iter only works once before emptying
+    p_iter = re.finditer(pub_ends_list, review.cleaned_text)
+    p_indices = [(m.end(), m.group()) for m in p_iter]
+
+    for e, index in enumerate(p_indices):
+        if (e==len(p_indices)-1):
+            start_index = 0
+        else:
+            start_index = p_indices[e-1][0] - 1
+
+        match = re.finditer("(?<= [^A-Z&\.])[\S]{,10} ?[A-Z][\w&. ]*?" + index[1] + '(?!\w)',
+                                review.cleaned_text[start_index:index[0]])
+        all_matches = [(m.span(), remove_dash_for_pub(m.group())) for m in match]
+        if len(all_matches) > 0:
+                pubs.extend(clean_pub_matches(all_matches))
+                spans.extend([m[0] for m in all_matches])
+
+    pubs = [PubName(word) for word in pubs]
+
+    for pub in pubs:
+        pub.review_id = review.review_id
+
+    for e, pub in enumerate(pubs):
+        pub.review_id = review.review_id
+        pub.review_loc = spans[e]
+
+    return pubs
+
+titles = """Doctor,Dr,Mr,Mrs,Miss,Msgr,Monsignor,Rev,Reverend,Hon,Honorable,Honourable,Prof,Professor,Madame,Madam,Lady,Lord,Sir,Dame,Master,Mistress,Princess,Prince,Duke,Duchess,Baron,Father,Chancellor,Principal,President,Pres,Warden,Dean,Regent,Rector,Provost,Director
+"""
+titles = titles.rstrip().split(',')
+title_list = '\.?\s(?=[A-Z])|'.join(titles)
+
+def remove_punct_not_following_title_or_initial(name):
+    name_parts = name.split()
+    cleaned_name = []
+    for part in name_parts:
+        if part[-1] in '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~':
+            if (len(part)>2) and (part[:-1] not in titles):
+                cleaned_name.append(part[:-1])
+            else:
+                cleaned_name.append(part)
+        else:
+            cleaned_name.append(part)
+    return ' '.join(cleaned_name)
+
+def clean_name(name):
+    name = remove_punct_not_following_title_or_initial(name)
+    cleaned_name = []
+    return ' '.join([word for word in name.split() if (word[0].isalpha())])
+
+def get_names_following_titles(review):
+    """
+    Returns names following titles - specifically capitalized titles followed by capitalized names.
+    Names can be any number of words in length, and can include punctuation.
+    """
+    names = []
+    spans = []
+
+    txt = review.cleaned_text
+
+    iterx = re.finditer(title_list, txt)
+    indices = [(m.start(), m.group()) for m in iterx]
+
+    for e, index in enumerate(indices):
+
+        if (e==len(indices)-1):
+            end_index = -1
+        else:
+            end_index = indices[e+1][0]
+
+        end_span = len(txt[indices[e][0]:end_index])
+        get_match = re.finditer('[A-Z]\w+[^A-Z]|[A-Z].[^A-Z]', txt[indices[e][0]:end_index])
+        matches = [(m.span(), m.group()) for m in get_match]
+        matches.reverse()
+
+        for n, m in enumerate(matches):
+            if n<len(matches)-1:
+                if (m[0][1] != matches[n-1][0][0]):
+                    end_span = m[0][1]
+
+        result = txt[indices[e][0]:(indices[e][0] + end_span - 1)]
+
+        if len(result) > len(indices[e][1]):
+            names.append(txt[indices[e][0]:(indices[e][0] + end_span - 1)])
+            spans.append(indices[e][0])
+
+    names = [word.replace("'s", "") for word in names]
+    names = [PersonName(clean_name(word)) for word in names]
+
+    for e, name in enumerate(names):
+        name.review_id = review.review_id
+        name.review_loc = (spans[e], spans[e]+len(name))
+
+    return names
+
+class ReviewObj():
+    """
+    Object type for book reviews.
+    Takes aps_id followed by review text. Both are required.
+
+    Parameters
+    ----------
+    self.review_id : aps_id
+    self.original_text : text passed to the original init
+    self.cleaned_text : cleaned text for generating names
+    self.pub_names : list of PubNames contained within the review
+    self.person_names : list of PersonNames contained within the review
+
+    """
+
+    def __findnames(self):
+        self.pub_names = get_publishers(self)
+        self.person_names = get_names_following_titles(self)
+
+    def __init__(self, aps_id, txt):
+        self.review_id = aps_id
+        self.original_text = txt
+        self.cleaned_text = preprocess_text(txt)
+
+        self.__findnames()
