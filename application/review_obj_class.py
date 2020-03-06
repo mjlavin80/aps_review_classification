@@ -3,6 +3,7 @@
 
 from application.name_obj_classes import PubName, PersonName, remove_punct
 from application.text_preprocessing import preprocess_text
+from nltk import word_tokenize
 import re
 
 pub_ends = ['company','co','incorporated','inc','firm','press','group','publishers','publishing',
@@ -158,5 +159,6 @@ class ReviewObj():
         self.review_id = aps_id
         self.original_text = txt
         self.cleaned_text = preprocess_text(txt)
+        self.cleaned_toks = word_tokenize(self.cleaned_text)
 
         self.__findnames()
