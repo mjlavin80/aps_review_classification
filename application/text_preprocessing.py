@@ -120,5 +120,6 @@ def preprocess_text(txt):
     txt = re.sub(' ; ','; ',txt)
     txt = re.sub(' : ',': ',txt)
     #and fixing hyphen issues
-    txt = re.sub('(?!\w)-(?!\w)',' - ',txt)
+    txt = re.sub('-(?!\w)',' - ',txt)
+    txt = re.sub('(?<!\w)-',' - ',txt)
     return txt
