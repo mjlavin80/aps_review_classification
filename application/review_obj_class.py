@@ -10,18 +10,15 @@ pub_ends = ['company','co','incorporated','inc','firm','press','group','publishe
                     'publications','pub','books','ltd','limited','society','house','associates']
 pub_ends_list = '|'.join([x.capitalize()+'\.?(?!\w)' for x in pub_ends])
 
-def remove_dash_for_pub(pub_match):
-    return re.sub(r'(?<!/w)-(?!/w)', '', pub_match)
+city_dict = pickle.load(open('../data/city_dict.pkl', 'rb'))
 
-def clean_pub_matches(match_list):
-    cleaned_matches = []
-    for match in match_list:
-        index_to_start = 0
-        for i, x in enumerate(match[1].split()):
-            if x[0].islower() and x[0]!='&':
-                index_to_start = i+1
-        cleaned_matches.append(' '.join(match[1].split()[index_to_start:]))
-    return cleaned_matches
+def is_part_of_pub(pub_part):
+    if (pub_part == 'and') or (pub_part =='&'):
+        return True
+    elif city_dict.lookup(pub_part.lower(), Verbosity.CLOSEST, max_edit_distance=1):
+        return False
+    else:
+        return pub_part[0].isupper()
 
 def get_publishers(review):
     """
@@ -40,27 +37,34 @@ def get_publishers(review):
     pubs = []
     spans = []
 
-    # iter only works once before emptying
-    p_iter = re.finditer(pub_ends_list, review.cleaned_text)
-    p_indices = [(m.end(), m.group()) for m in p_iter]
+    toks = review.cleaned_toks
+    txt = review.cleaned_text
 
-    for e, index in enumerate(p_indices):
-        if (e==len(p_indices)-1):
-            start_index = 0
-        else:
-            start_index = p_indices[e-1][0] - 1
+    pubnames = []
 
-        match = re.finditer("(?<= [^A-Z&\.])[\S]{,10} ?[A-Z][\w&. ]*?" + index[1] + '(?!\w)',
-                                review.cleaned_text[start_index:index[0]])
-        all_matches = [(m.span(), remove_dash_for_pub(m.group())) for m in match]
-        if len(all_matches) > 0:
-                pubs.extend(clean_pub_matches(all_matches))
-                spans.extend([m[0] for m in all_matches])
+    for e, tok in enumerate(toks):
+        if tok.replace(",","").replace(".","") in pub_ends:
+            if is_part_of_pub(toks[e-1]):
+                pub_name = []
+                pub_span = []
+                for pos in range(e-1, e-6, -1):
+                    if toks[pos] == '.':
+                        break
+                    if not is_part_of_pub(toks[pos]):
+                        break
+                    pub_name.append(toks[pos])
+                    pub_span.append(pos)
+                if any([x.isalpha() for x in [word for word in pub_name if word !='and']]):
+                    pubnames.append((pub_span[-1], e+1))
+
+    if len(pubnames) > 0:
+        for (x, y) in pubnames:
+            newname = ' '.join(toks[x:y])
+            pubs.append(newname)
+            match = re.search(newname, txt)
+            spans.append(match.span())
 
     pubs = [PubName(word) for word in pubs]
-
-    for pub in pubs:
-        pub.review_id = review.review_id
 
     for e, pub in enumerate(pubs):
         pub.review_id = review.review_id
