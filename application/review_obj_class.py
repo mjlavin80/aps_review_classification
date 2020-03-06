@@ -5,10 +5,12 @@ from application.name_obj_classes import PubName, PersonName, remove_punct
 from application.text_preprocessing import preprocess_text
 from nltk import word_tokenize
 import re
+import pickle
+from symspellpy.symspellpy import SymSpell, Verbosity
 
 pub_ends = ['company','co','incorporated','inc','firm','press','group','publishers','publishing',
                     'publications','pub','books','ltd','limited','society','house','associates']
-pub_ends_list = '|'.join([x.capitalize()+'\.?(?!\w)' for x in pub_ends])
+pub_ends = [x.capitalize() for x in pub_ends]
 
 city_dict = pickle.load(open('../data/city_dict.pkl', 'rb'))
 
@@ -54,7 +56,7 @@ def get_publishers(review):
                         break
                     pub_name.append(toks[pos])
                     pub_span.append(pos)
-                if any([x.isalpha() for x in [word for word in pub_name if word !='and']]):
+                if any([x.isalpha() for x in [word for word in pub_name if word !='and']]) and any([len(x)>2 for x in [word for word in pub_name if word !='and']]):
                     pubnames.append((pub_span[-1], e+1))
 
     if len(pubnames) > 0:
