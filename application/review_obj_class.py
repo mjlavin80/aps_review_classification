@@ -22,6 +22,11 @@ def is_part_of_pub(pub_part):
     else:
         return pub_part[0].isupper()
 
+def obscure_single_match(text, x, y):
+    text_list = list(text)
+    text_list[x:y] = list(len(text[x:y]) * '@')
+    return ''.join(text_list)
+
 def remove_duplicate_pubnames(pnlist):
     cleaned = []
     for e, (x, y) in enumerate(pnlist):
@@ -72,11 +77,13 @@ def get_publishers(review):
     pubnames = remove_duplicate_pubnames(pubnames)
 
     if len(pubnames) > 0:
+        temp_txt = txt
         for (x, y) in pubnames:
             newname = ' '.join(toks[x:y])
             pubs.append(newname)
-            match = re.search(newname, txt)
+            match = re.search(newname, temp_txt)
             spans.append(match.span())
+            temp_txt = obscure_single_match(temp_txt, *match.span())
 
     pubs = [PubName(word) for word in pubs]
 
