@@ -22,6 +22,16 @@ def is_part_of_pub(pub_part):
     else:
         return pub_part[0].isupper()
 
+def remove_duplicate_pubnames(pnlist):
+    cleaned = []
+    for e, (x, y) in enumerate(pnlist):
+        starts = [a for (a,b) in pnlist[e+1:]]
+        if x in starts:
+            pass
+        else:
+            cleaned.append(pnlist[e])
+    return cleaned
+
 def get_publishers(review):
     """
     Takes a ReviewObj.
@@ -58,6 +68,8 @@ def get_publishers(review):
                     pub_span.append(pos)
                 if any([x.isalpha() for x in [word for word in pub_name if word !='and']]) and any([len(x)>2 for x in [word for word in pub_name if word !='and']]):
                     pubnames.append((pub_span[-1], e+1))
+
+    pubnames = remove_duplicate_pubnames(pubnames)
 
     if len(pubnames) > 0:
         for (x, y) in pubnames:
