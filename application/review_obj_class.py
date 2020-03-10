@@ -117,7 +117,7 @@ def get_names_following_titles(review):
     names = []
     spans = []
 
-    txt = review.cleaned_text
+    txt = review.no_pubs_text
 
     iterx = re.finditer(title_list, txt)
     indices = [(m.start(), m.group()) for m in iterx]
@@ -169,9 +169,21 @@ class ReviewObj():
 
     """
 
+    def __obscure_matches(self, name = 'ex'):
+        text_list = list(self.cleaned_text)
+        if name == 'pub':
+            for (x, y) in [pub.review_loc for pub in self.pub_names]:
+                text_list[x:y] = list(len(self.cleaned_text[x:y]) * '@')
+        if name == 'person':
+            for (x, y) in [pers.review_loc for pers in self.person_names]:
+                text_list[x:y] = list(len(self.cleaned_text[x:y]) * '@')
+        return ''.join(text_list)
+
     def __findnames(self):
         self.pub_names = get_publishers(self)
+        self.no_pubs_text = self.__obscure_matches(name = 'pub')
         self.person_names = get_names_following_titles(self)
+        self.no_people_text = self.__obscure_matches(name = 'person')
 
     def __init__(self, aps_id, txt):
         self.review_id = aps_id
