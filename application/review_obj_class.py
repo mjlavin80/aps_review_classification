@@ -52,7 +52,8 @@ def get_publishers(review):
     """
 
     pubs = []
-    spans = []
+    char_spans = []
+    tok_spans = []
 
     toks = review.cleaned_toks
     txt = review.cleaned_text
@@ -81,15 +82,17 @@ def get_publishers(review):
         for (x, y) in pubnames:
             newname = ' '.join(toks[x:y])
             pubs.append(newname)
+            tok_spans.append((x,y))
             match = re.search(newname, temp_txt)
-            spans.append(match.span())
+            char_spans.append(match.span())
             temp_txt = obscure_single_match(temp_txt, *match.span())
 
     pubs = [PubName(word) for word in pubs]
 
     for e, pub in enumerate(pubs):
         pub.review_id = review.review_id
-        pub.review_loc = spans[e]
+        pub.review_loc_toks = tok_spans[e]
+        pub.review_loc_chars = char_spans[e]
 
     return pubs
 
@@ -157,7 +160,7 @@ def get_names_following_titles(review):
 
     for e, name in enumerate(names):
         name.review_id = review.review_id
-        name.review_loc = (spans[e], spans[e]+len(name))
+        name.review_loc_chars = (spans[e], spans[e]+len(name))
 
     return names
 
@@ -179,10 +182,10 @@ class ReviewObj():
     def __obscure_matches(self, name = 'ex'):
         text_list = list(self.cleaned_text)
         if name == 'pub':
-            for (x, y) in [pub.review_loc for pub in self.pub_names]:
+            for (x, y) in [pub.review_loc_chars for pub in self.pub_names]:
                 text_list[x:y] = list(len(self.cleaned_text[x:y]) * '@')
         if name == 'person':
-            for (x, y) in [pers.review_loc for pers in self.person_names]:
+            for (x, y) in [pers.review_loc_chars for pers in self.person_names]:
                 text_list[x:y] = list(len(self.cleaned_text[x:y]) * '@')
         return ''.join(text_list)
 

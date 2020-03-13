@@ -56,7 +56,8 @@ class NameObj(str):
     def __init__(self, name):
         self.full_name = name
         self.review_id = ''
-        self.review_loc = ''
+        self.review_loc_chars = ''
+        self.review_loc_toks = ''
         self.all_variants = ''
 
     def getNameVariants(self):
