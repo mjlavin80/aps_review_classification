@@ -1,6 +1,6 @@
 # adding all this stuff in just in case
 
-#------------------ Jupyter, R  
+#------------------ Jupyter, R
 .ipynb_checkpoints
 .Rproj.user
 #------------------ common OS config files
@@ -12,5 +12,3 @@ desktop.ini
 *.zip
 aps_reviews
 names
-*.pkl
-
