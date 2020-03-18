@@ -1,4 +1,4 @@
-# eva bacas, 3.5.19
+# eva bacas, 3.5.20
 # this file defines the ReviewObj class & functions necessary to find PersonNames & PubNames in ReviewObj
 
 from application.name_obj_classes import PubName, PersonName, remove_punct
@@ -17,7 +17,7 @@ city_dict = pickle.load(open('../data/city_dict.pkl', 'rb'))
 def is_part_of_pub(pub_part):
     if (pub_part == 'and') or (pub_part =='&'):
         return True
-    elif city_dict.lookup(pub_part.lower(), Verbosity.CLOSEST, max_edit_distance=1):
+    elif city_dict.lookup(pub_part.lower(), Verbosity.CLOSEST, max_edit_distance=2):
         return False
     else:
         return pub_part[0].isupper()
@@ -101,7 +101,7 @@ def get_publishers(review):
 titles = """Doctor,Dr,Mr,Mrs,Miss,Msgr,Monsignor,Rev,Reverend,Hon,Honorable,Honourable,Prof,Professor,Madame,Madam,Lady,Lord,Sir,Dame,Master,Mistress,Princess,Prince,Duke,Duchess,Baron,Father,Chancellor,Principal,President,Pres,Warden,Dean,Regent,Rector,Provost,Director
 """
 titles = titles.rstrip().split(',')
-title_list = '\.?\s(?=[A-Z])|'.join(titles)
+title_list = '\.?\s(?=[A-Z])|'.join(titles) + '\.?\s(?=[A-Z])'
 
 def remove_punct_not_following_title_or_initial(name):
     name_parts = name.split()

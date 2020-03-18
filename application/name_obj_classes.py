@@ -1,4 +1,4 @@
-# eva bacas, 3.4.19
+# eva bacas, 3.4.20
 # this file defines the NameObj, PubName, and PersonName classes
 
 # import necessary packages
@@ -95,7 +95,9 @@ class PubName(NameObj):
         if '&' in self.full_name or 'and' in self.full_name or 'And' in self.full_name:
             self.name_parts = [x.strip().lower() for x in re.split('&|and|And|,', temp)]
         else:
-            self.name_parts = [x.strip().lower() for x in temp.split()]
+            temp2 = [x.strip().lower() for x in temp.split()]
+            temp2.insert(-1, "@")
+            self.name_parts = ' '.join(temp2).split(' @ ')
 
         self.pub_type = self.name_parts[-1]
         self.pub_type_variants = get_fuzzy_pub_ends(self.pub_type)
