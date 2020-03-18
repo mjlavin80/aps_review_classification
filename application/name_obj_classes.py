@@ -272,7 +272,11 @@ class PersonName(NameObj):
         self.name_parts = [x.lower() for x in self.full_name.split()]
         self.title = remove_punct(self.name_parts[0])
         # ASSUMES ALMOST ALL NEUTRAL TITLES ARE MEN
-        self.title_gender = title_gender_dict[self.title]
+        try:
+            self.title_gender = title_gender_dict[self.title]
+        except:
+            raise
+            print(self.title)
         # will add later
         self.guessed_gender = ''
         self.last_name = self.name_parts[-1]

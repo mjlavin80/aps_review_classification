@@ -68,6 +68,8 @@ def get_publishers(review):
                 for pos in range(e-1, e-6, -1):
                     if toks[pos] == '.':
                         break
+                    if toks[pos] in pub_ends:
+                        break
                     if not is_part_of_pub(toks[pos]):
                         break
                     pub_name.append(toks[pos])

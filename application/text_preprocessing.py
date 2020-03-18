@@ -107,13 +107,16 @@ def get_word_count(txt):
     return len(toks)
 
 def preprocess_text(txt):
-    txt = re.sub(' +',' ',txt)
     #adding space around certain problem punctuation
     txt = re.sub(',',' , ',txt)
     txt = re.sub(';',' ; ',txt)
     txt = re.sub(':',' : ',txt)
     txt = re.sub('"',' " ',txt)
+    txt = re.sub('&',' & ',txt)
     txt = re.sub("'(?!s)"," ' " ,txt)
+    # remove extra whitespace
+    txt = re.sub(' +',' ',txt)
+    # fix hyphenated words
     txt = ' '.join(fix_hyphenated_words(txt.split()))
     #putting space back
     txt = re.sub(' , ',', ',txt)
