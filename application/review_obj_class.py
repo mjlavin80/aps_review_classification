@@ -178,6 +178,9 @@ class ReviewObj():
     self.cleaned_text : cleaned text for generating names
     self.pub_names : list of PubNames contained within the review
     self.person_names : list of PersonNames contained within the review
+    self.cleaned_toks : cleaned_text tokenized using NLTK word_tokenize
+    self.coll_toks_ind : tokens but all spaces in NameObjs replaced by hyphens
+    self.coll_toks_all : tokens but PubNames, PersonNames replaced by ■,●
 
     """
 
@@ -189,6 +192,19 @@ class ReviewObj():
         if name == 'person':
             for (x, y) in [pers.review_loc_chars for pers in self.person_names]:
                 text_list[x:y] = list(len(self.cleaned_text[x:y]) * '@')
+        if name == 'both':
+            for (x, y) in [pub.review_loc_chars for pub in self.pub_names]:
+                text_list[x:y] = list(len(self.cleaned_text[x:y]) * '■')
+            for (x, y) in [pers.review_loc_chars for pers in self.person_names]:
+                text_list[x:y] = list(len(self.cleaned_text[x:y]) * '●')
+        return ''.join(text_list)
+
+    def __prep_for_collocations(self):
+        text_list = list(self.cleaned_text)
+        for (x, y) in [pub.review_loc_chars for pub in self.pub_names]:
+            text_list[x:y] = list(self.cleaned_text[x:y].replace(' ','_'))
+        for (x, y) in [pers.review_loc_chars for pers in self.person_names]:
+            text_list[x:y] = list(self.cleaned_text[x:y].replace(' ','_'))
         return ''.join(text_list)
 
     def __findnames(self):
@@ -204,3 +220,6 @@ class ReviewObj():
         self.cleaned_toks = word_tokenize(self.cleaned_text)
 
         self.__findnames()
+
+        self.coll_toks_ind = word_tokenize(self.__prep_for_collocations())
+        self.coll_toks_all = word_tokenize(self.__obscure_matches(name = 'both'))
