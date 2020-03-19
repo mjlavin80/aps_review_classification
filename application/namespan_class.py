@@ -23,8 +23,7 @@ class NameSpan():
     self.name_id : unique id for span object (review_id plus the start_char)
     self.group : grouping by similarity to other objects w the same label in review
      - defaults to -1
-
-    **things i'm planning on adding: self.collocates**
+    self.collocates : 2 words preceding and following each NameSpan
 
     """
     def __init__(self, NameObj):
@@ -37,6 +36,7 @@ class NameSpan():
         self.label = NameObj.name_type
         self.name_id = int(self.review_id + str(self.start_char))
         self.group = -1
+        self.collocates = []
 
 def group_people(spanlist):
 
@@ -126,4 +126,10 @@ class NameSpanGenerator:
         if self.pub_names:
             pub_spans = [NameSpan(x) for x in self.pub_names]
             all_spans.extend(group_pubs(pub_spans))
-        return all_spans
+        self.spans = all_spans
+
+        ni = [x.name.review_loc_toks for x in self.spans]
+        for e, span in enumerate(self.spans):
+            span.collocates = self.coll_toks_ind[ni[e]-2:ni[e]+3]
+
+        return self

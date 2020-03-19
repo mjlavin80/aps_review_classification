@@ -179,7 +179,7 @@ class ReviewObj():
     self.pub_names : list of PubNames contained within the review
     self.person_names : list of PersonNames contained within the review
     self.cleaned_toks : cleaned_text tokenized using NLTK word_tokenize
-    self.coll_toks_ind : tokens but all spaces in NameObjs replaced by hyphens
+    self.coll_toks_ind : tokens but all spaces in NameObjs replaced by underscores
     self.coll_toks_all : tokens but PubNames, PersonNames replaced by ■,●
 
     """
@@ -207,11 +207,20 @@ class ReviewObj():
             text_list[x:y] = list(self.cleaned_text[x:y].replace(' ','_'))
         return ''.join(text_list)
 
+    def __get_tok(self):
+        pub_toks = [e for e, x in enumerate(self.coll_toks_all) if "■" in x]
+        pers_toks = [e for e, x in enumerate(self.coll_toks_all) if "●" in x]
+        for e, pub in enumerate(self.pub_names):
+            pub.review_loc_toks = pub_toks[e]
+        for e, pers in enumerate(self.person_names):
+            pers.review_loc_toks = pers_toks[e]
+
     def __findnames(self):
         self.pub_names = get_publishers(self)
         self.no_pubs_text = self.__obscure_matches(name = 'pub')
         self.person_names = get_names_following_titles(self)
         self.no_people_text = self.__obscure_matches(name = 'person')
+        self.spans = ''
 
     def __init__(self, aps_id, txt):
         self.review_id = aps_id
@@ -223,3 +232,5 @@ class ReviewObj():
 
         self.coll_toks_ind = word_tokenize(self.__prep_for_collocations())
         self.coll_toks_all = word_tokenize(self.__obscure_matches(name = 'both'))
+
+        self.__get_tok()
