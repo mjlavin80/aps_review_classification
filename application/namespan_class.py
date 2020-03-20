@@ -5,6 +5,7 @@ from application.name_obj_classes import get_fuzzy_pub_ends
 from application.review_obj_class import ReviewObj
 from nltk.metrics import edit_distance
 import numpy as np
+import copy
 
 class NameSpan():
     """
@@ -129,7 +130,17 @@ class NameSpanGenerator:
         self.spans = all_spans
 
         ni = [x.name.review_loc_toks for x in self.spans]
+        toks = copy.deepcopy(self.coll_toks_ind)
         for e, span in enumerate(self.spans):
-            span.collocates = self.coll_toks_ind[ni[e]-2:ni[e]+3]
+            if (ni[e] < 2):
+                ftoks = list((2-ni[e])*"^")
+                ftoks.extend((toks))
+                span.collocates = ftoks[0:(ni[e]+3+(2-ni[e]))]
+            elif (ni[e] > (len(toks)-3)):
+                btoks = toks
+                btoks.extend(list( (ni[e]-(len(toks)-3)) * "$") )
+                span.collocates = btoks[(ni[e]-2):]
+            else:
+                span.collocates = self.coll_toks_ind[ni[e]-2:ni[e]+3]
 
         return self
