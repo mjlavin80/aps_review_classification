@@ -132,15 +132,15 @@ class NameSpanGenerator:
         ni = [x.name.review_loc_toks for x in self.spans]
         toks = copy.deepcopy(self.coll_toks_ind)
         for e, span in enumerate(self.spans):
-            if (ni[e] < 2):
-                ftoks = list((2-ni[e])*"^")
+            if (ni[e] < 7):
+                ftoks = list((7-ni[e])*"^")
                 ftoks.extend((toks))
-                span.collocates = ftoks[0:(ni[e]+3+(2-ni[e]))]
-            elif (ni[e] > (len(toks)-3)):
+                span.collocates = ftoks[0:(ni[e]+8+(7-ni[e]))]
+            elif (ni[e] > (len(toks)-8)):
                 btoks = toks
-                btoks.extend(list( (ni[e]-(len(toks)-3)) * "$") )
-                span.collocates = btoks[(ni[e]-2):]
+                btoks.extend(list( (ni[e]-(len(toks)-8)) * "$") )
+                span.collocates = btoks[(ni[e]-7):]
             else:
-                span.collocates = self.coll_toks_ind[ni[e]-2:ni[e]+3]
+                span.collocates = self.coll_toks_ind[ni[e]-7:ni[e]+8]
 
         return self
