@@ -12,3 +12,6 @@ desktop.ini
 *.zip
 aps_reviews
 names
+database
+config.py
+config2.py
