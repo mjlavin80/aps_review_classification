@@ -6,19 +6,11 @@
 
 3. You should now see a page that says "You are logged in."
 
-4. Once this is verified, go to https://aps-web-app.matthew-lavin.com/. You should see a page with a review headline, periodical, publication date, etc.
+4. Once this is verified, go to https://aps-web-app.matthew-lavin.com,  https://aps-web-app.matthew-lavin.com/classify, or https://aps-web-app.matthew-lavin.com/crosscheck. 
 
-# Evaluating the Digitized Review via ProQuest 
+# Classifying the Digitized Review via ProQuest 
 
-Begin by clicking on "Open Link in New Tab." This should load a page with a teel banner that says ProQuest in the upper left hand corner. Below will be a menu, followed by  some bibliographical information, such as:
-
-> D. Appleton & Company.
-
-> The Literary World; a Monthly Review of Current Literature (1870-1904); Boston Vol. 32, Iss. 10,  (Oct 1, 1901): 152.
-
-This information should match the review from the previous tab. Below this, there will be a window with a pdf in it. Note that you must be on Pitt's network for this link to display properly. 
-
-# Coding the Review Category
+Begin by clicking on "Open Link in New Tab." This should load a pdf file. The file should match the review information from the previous tab.
 
 Read and/or skim the review. Dtermine if it is a review of one work, a review of two or more works, or something that isn't a review. Choose the appropriate label under "Category." Here are some brief definitions:
 
@@ -29,9 +21,18 @@ Read and/or skim the review. Dtermine if it is a review of one work, a review of
 - **Non-Review Content:** Anything that isn't a book review. Common examples include author interviews, letters from readers, news from various publishers, etc. For example, see https://query.nytimes.com/gst/abstract.html?res=9A00E6DD163EE733A25754C0A9679C946497D6CF
 
 - **Brief or Mostly Quotes Review**: A review that is very sparse or heavily comprised of material from the reviewed book. The length cutoff is anything about 200 words or less. Use your best judgment; these will be cross-checked at a later date.  
-- **Cluster of Reviews**: Thus category is reserved for a case when the podf contains more than one review, or a review plus other conent. Tagging a review as a cluster flags it for follow-up.  
 
-# Presumed gender
+- **Cluster of Reviews**: This category is reserved for a case when the podf contains more than one review, or a review plus other conent. Tagging a review as a cluster flags it for follow-up. (Note: cluster vs. multi is somethin of a judgment call, so don't worry too much about which of those to use.)
+
+- **Review Link Doesn't Work**: Let me know ASAP. 
+
+That's it for classifying! Don't forget to click "Submit"!
+
+# Adding Details to Single Work Reviews
+
+Note: Everything that comes up here should be a single work review. If you find one that isn't, email me the APS Record ID and reload the page to skip that review. 
+
+## Presumed gender
 
 There are five choices for this drop-down menu. Here are some brief definitions:
 
@@ -43,9 +44,7 @@ There are five choices for this drop-down menu. Here are some brief definitions:
 
 - **Presumed gender(s) unknown or not used**: One or more authors, where a gender label is unclear, or maybe the reviewer avoided gender terms to remain neutral.
 
-- **Not single-work Review**: Use this for any reviews tagged as multi-work, non-review, cluster, or brief.
-
-# Reviewed book's title, date, publisher, etc.
+## Reviewed book's title, date, publisher, etc.
 
 If the review is anything besides a "Single Work Review," you can now click submit and then click "Keep Going" to call up another review. However, if it's a "Single Work Review," you should keep going. Here are some tips for each field:
 
@@ -63,5 +62,6 @@ If the review is anything besides a "Single Work Review," you can now click subm
 
 - **Author Name**: The reviewed author, as named in the review. If the review only ever calls the author "Mrs. Cleary," don't add the first name, even if it's obvious what it should be. Use the most detailed version of the name included in the review. If two or more authors are given, use a semicolon to separate each one. 
 
-# That's it! Don't forget to click "Submit"!
+# Cross-checking 
 
+This task combines the the classification task and details task into one form. You only needs to enter details for single work reviews. For presumed gender of any reviews tagged as multi-work, non-review, cluster, or brief, select **Not single-work Review**.
